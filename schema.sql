@@ -5,7 +5,7 @@ CREATE TABLE Suppliers (
     SupplierName TEXT NOT NULL,
     ContactNumber TEXT
 
-)
+);
 
 -- products table
 CREATE TABLE Products (
@@ -14,7 +14,7 @@ CREATE TABLE Products (
     Price DECIMAL(10,2) NOT NULL,
     StockQuantity INT NOT NULL,
     SupplierID INT,
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID) ON DELETE SET NULL
 );
 
 -- sales table
@@ -23,5 +23,5 @@ CREATE TABLE Sales (
     QuantitySold INT NOT NULL,
     SaleDate DATE NOT NULL,
     ProductID INT,
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE
 )
