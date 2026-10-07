@@ -4,11 +4,76 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json()); // parse json requests
+
 // =============================================
 // TODO: Task (1) Configure MySQl 2 connection
 // and create the required database (if it does not exist)
 // and create the Products, Suppliers, and Sales tables
 // =============================================
+const db = mysql.createPool({
+  port: 3306,
+  host: "localhost",
+  user: "root",
+  password: "",
+});
+
+async function dbInit() {
+  try {
+    await db.query("CREATE DATABASE IF NOT EXISTS retail_store");
+
+    // define the the database to be used
+    // I define it here to prevent the pool from throwing an error
+    // when the database is not yet created
+    await db.query("USE retail_store");
+
+    await db.query(`
+    CREATE TABLE IF NOT EXISTS Suppliers (
+        SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+        SupplierName TEXT NOT NULL,
+        ContactNumber TEXT
+    );
+    `);
+    await db.query(`
+    CREATE TABLE IF NOT EXISTS Products (
+        ProductID INT AUTO_INCREMENT PRIMARY KEY,
+        ProductName TEXT NOT NULL,
+        Price DECIMAL(10,2) NOT NULL,
+        StockQuantity INT NOT NULL,
+        SupplierID INT,
+        FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID) ON DELETE SET NULL
+    );
+    `);
+    await db.query(`
+    CREATE TABLE IF NOT EXISTS Sales(
+        SaleID INT AUTO_INCREMENT PRIMARY KEY,
+        QuantitySold INT NOT NULL,
+        SaleDate DATE NOT NULL,
+        ProductID INT,
+        FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE CASCADE
+    );
+    `);
+  } catch (err) {
+    console.log("Error in dbInit: " + err.message);
+  }
+}
+
+// Test the database connection
+app.get("/test-db", async (req, res) => {
+  try {
+    const [result] = await db.query(`
+        SELECT * FROM Products
+        `);
+    res.json({
+      message: "Database connection successful",
+      result: result[0] || "No data found in the DB",
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "Database connection failed",
+      details: err.message,
+    });
+  }
+});
 
 // =============================================
 // TODO: Task (2) Create REST API endpoints to perform CRUD operations for the Products table
@@ -109,15 +174,16 @@ app.use(express.json()); // parse json requests
 // Grant DELETE permission to “store_manager” only on the Sales table..
 // =============================================
 
-// mysql connection pool
-const db = mysql.createPool({
-  port: 3306,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "retail_store",
-});
+//  Initiating the DB and starting the server
+async function startServer() {
+  try {
+    await dbInit(); // initialize the database before starting the server
 
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.log("Error in startServer: " + err.message);
+  }
+}
+startServer();
