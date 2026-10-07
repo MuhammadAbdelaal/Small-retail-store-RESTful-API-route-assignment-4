@@ -10,6 +10,7 @@ app.use(express.json()); // parse json requests
 // and create the required database (if it does not exist)
 // and create the Products, Suppliers, and Sales tables
 // =============================================
+// create a connection pool to the database
 const db = mysql.createPool({
   port: 3306,
   host: "localhost",
@@ -17,6 +18,7 @@ const db = mysql.createPool({
   password: "",
 });
 
+// create the database and tables (only if they do not exist)
 async function dbInit() {
   try {
     await db.query("CREATE DATABASE IF NOT EXISTS retail_store");
@@ -57,27 +59,76 @@ async function dbInit() {
   }
 }
 
-// Test the database connection
-app.get("/test-db", async (req, res) => {
-  try {
-    const [result] = await db.query(`
-        SELECT * FROM Products
-        `);
-    res.json({
-      message: "Database connection successful",
-      result: result[0] || "No data found in the DB",
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: "Database connection failed",
-      details: err.message,
-    });
-  }
-});
+// // Test the database connection
+// app.get("/test-db", async (req, res) => {
+//   try {
+//     const [result] = await db.query(`
+//         SELECT * FROM Products
+//         `);
+//     res.status(200).json({
+//       message: "Database connection successful",
+//       result: result[0] || "No data found in the DB",
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       error: "Database connection failed",
+//       details: err.message,
+//     });
+//   }
+// });
 
 // =============================================
 // TODO: Task (2) Create REST API endpoints to perform CRUD operations for the Products table
 // ● Create a product.
+app.post("/products", async (req, res) => {
+  // get product data from the request body
+  const { ProductName, Price, StockQuantity, SupplierID } = req.body;
+  const id = SupplierID || null;
+
+  // if the request body is empty, or any of the required fields missing, or not valid
+  if (
+    !ProductName ||
+    typeof Price !== "number" ||
+    Price <= 0 ||
+    typeof StockQuantity !== "number" ||
+    StockQuantity < 0
+  ) {
+    // return 400 (bad request) error, and the error message
+    return res.status(400).json({
+      error: `Product data is missing or invalid.
+      Product name, price, and stock quantity are required.
+      Price and stock quantity must be numbers and greater than 0.`,
+    });
+  }
+
+  // if fields are good to go, insert the data into the database
+  try {
+    const query = `INSERT INTO Products (ProductName, Price, StockQuantity, SupplierID)
+        VALUES (?, ?, ?, ?)`;
+    const [result] = await db.query(query, [
+      ProductName,
+      Price,
+      StockQuantity,
+      id,
+    ]);
+    return res.status(201).json({
+      message: "Product created successfully with the following details:",
+      product: {
+        ProductID: result.insertId,
+        ProductName,
+        Price,
+        StockQuantity,
+        SupplierID: id,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: "Error creating product",
+      details: err.message,
+    });
+  }
+  //
+});
 // ● Retrieve all products.
 // ● Retrieve a product by ID.
 // ● Update a product.
