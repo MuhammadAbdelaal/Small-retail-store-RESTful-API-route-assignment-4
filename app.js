@@ -130,6 +130,24 @@ app.post("/products", async (req, res) => {
   //
 });
 // ● Retrieve all products.
+app.get("/products", async (req, res) => {
+  // get all products
+  try {
+    const [result] = await db.query(`
+            SELECT * FROM Products
+            `);
+    return res.status(200).json({
+      message: "Here are all the products in our store: ",
+      products: result,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving products for the following reason: ",
+      error: err.message,
+    });
+  }
+});
+
 // ● Retrieve a product by ID.
 // ● Update a product.
 // ● Delete a product.
