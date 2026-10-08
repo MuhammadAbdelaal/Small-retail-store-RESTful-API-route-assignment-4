@@ -3,6 +3,7 @@ const { dbInit } = require("./db/connection");
 const app = express();
 const PORT = 3000;
 const productRouter = require("./app/routes/product.routes");
+const supplierRouter = require("./app/routes/supplier.routes");
 
 app.use(express.json()); // middleware to parse json requests
 
@@ -18,13 +19,8 @@ app.use((err, req, res, next) => {
 // Task (2) productRouter
 app.use("/products", productRouter);
 
-// =============================================
-// TODO: Task (3) Create REST API endpoints to perform CRUD operations for the Suppliers table
-// =============================================
-// ● Create a supplier.
-// ● Retrieve all suppliers.
-// ● Update supplier information.
-// ● Delete a supplier.
+// Task (3) supplierRouter
+app.use("/suppliers", supplierRouter);
 
 // =============================================
 // TODO: Task (4) Create REST API endpoints to manage Sales
