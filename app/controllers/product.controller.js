@@ -124,21 +124,14 @@ async function updateProduct(req, res, next) {
     });
   }
 
-  // if any of the values not provided === undefined
-  // convert undefined fields to null to skip updating them using COALESCE() db function
-  const productName = ProductName === undefined ? null : ProductName;
-  const price = Price === undefined ? null : Price;
-  const stockQuantity = StockQuantity === undefined ? null : StockQuantity;
-  const supplierID = SupplierID === undefined ? null : SupplierID;
-
   // when fields are good to go, update the data in the database using COALESCE() db function
   try {
     // call the service to update the product
     const product = await productService.updateProduct(
-      productName,
-      price,
-      stockQuantity,
-      supplierID,
+      ProductName,
+      Price,
+      StockQuantity,
+      SupplierID,
       id,
     );
 

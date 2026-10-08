@@ -36,12 +36,19 @@ async function updateProduct(
   supplierID,
   id,
 ) {
+  // if any of the values not provided === undefined
+  // convert undefined fields to null to skip updating them using COALESCE() db function
+  const ProductName = productName === undefined ? null : productName;
+  const Price = price === undefined ? null : price;
+  const StockQuantity = stockQuantity === undefined ? null : stockQuantity;
+  const SupplierID = supplierID === undefined ? null : supplierID;
+
   // update the product in the database
   const isUpdated = await productRepository.dbUpdateProduct(
-    productName,
-    price,
-    stockQuantity,
-    supplierID,
+    ProductName,
+    Price,
+    StockQuantity,
+    SupplierID,
     id,
   );
 
