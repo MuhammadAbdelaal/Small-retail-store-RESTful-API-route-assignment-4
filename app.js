@@ -3,7 +3,15 @@ const mysql = require("mysql2/promise");
 const app = express();
 const PORT = 3000;
 
-app.use(express.json()); // parse json requests
+app.use(express.json()); // middleware to parse json requests
+// middleware to catch JSON parsing
+app.use((err, req, res, next) => {
+  if (err.status === 400) {
+    // syntax errors come with status code 400
+    return res.status(400).json({ message: "invalid json" });
+  }
+  next(err); // if it's not a syntax error, pass it to the next middleware if any
+});
 
 // =============================================
 // TODO: Task (1) Configure MySQl 2 connection
@@ -79,6 +87,7 @@ async function dbInit() {
 
 // =============================================
 // TODO: Task (2) Create REST API endpoints to perform CRUD operations for the Products table
+// =============================================
 // ● Create a product.
 app.post("/products", async (req, res) => {
   // get product data from the request body
@@ -149,9 +158,148 @@ app.get("/products", async (req, res) => {
 });
 
 // ● Retrieve a product by ID.
+app.get("/products/:id", async (req, res) => {
+  // obtain the product id from the request params
+  const { id } = req.params;
+  try {
+    const query = `SELECT * FROM Products WHERE ProductID = ?`;
+
+    const [result] = await db.query(query, [id]);
+
+    // if no product found, return 404 (not found) error
+    if (result.length === 0) {
+      return res.status(404).json({
+        message: `No product found with the ID: ${id}`,
+      });
+    }
+    // if found? return the product details
+    return res.status(200).json({
+      message: `Here is the product details with the ID: ${id}: `,
+      product: result[0],
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving product with the following reason: ",
+      error: err.message,
+    });
+  }
+});
 // ● Update a product.
+app.patch("/products/:id", async (req, res) => {
+  // obtain the product id from the request params
+  const { id } = req.params;
+
+  // get product data provided
+  const { ProductName, Price, StockQuantity, SupplierID } = req.body || {};
+
+  // if the request body is empty, data are not valid
+  if (
+    // if no data provided at all
+    ProductName === undefined &&
+    Price === undefined &&
+    StockQuantity === undefined &&
+    SupplierID === undefined
+  ) {
+    // return 400 (bad request) error, and the error message
+    return res.status(400).json({
+      error: `Product data is missing. Provide at least one field to update.`,
+    });
+  }
+
+  // validate the price is number and greater than 0
+  if (Price !== undefined && Number(Price) <= 0) {
+    return res.status(400).json({
+      error: "Price must be a number greater than 0.",
+    });
+  }
+
+  // validate the stock is a number and greater than or equal to 0
+  if (StockQuantity !== undefined && Number(StockQuantity) < 0) {
+    return res.status(400).json({
+      error: "Stock quantity must be a number greater than or equal to 0.",
+    });
+  }
+
+  // if any of the values not provided === undefined
+  // convert undefined fields to null to skip updating them using COALESCE() db function
+  const price = Price === undefined ? null : Price;
+  const stockQuantity = StockQuantity === undefined ? null : StockQuantity;
+  const productName = ProductName === undefined ? null : ProductName;
+  const supplierID = SupplierID === undefined ? null : SupplierID;
+
+  // when fields are good to go, update the data in the database using COALESCE() db function
+  try {
+    // construct the query
+    const query = `UPDATE Products SET
+        ProductName = COALESCE(?, ProductName),
+        Price = COALESCE(?, Price),
+        StockQuantity = COALESCE(?, StockQuantity),
+        SupplierID = COALESCE(?, SupplierID)
+        WHERE ProductID = ?`;
+
+    // execute the query to update
+    const [result] = await db.query(query, [
+      productName,
+      price,
+      stockQuantity,
+      supplierID,
+      id,
+    ]);
+
+    // if no product updated, return 404 product not found
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: `No product found with the ID: ${id}`,
+      });
+    }
+
+    // if the product was updated, return the updated product details
+    const [updatedProduct] = await db.query(
+      "SELECT * FROM Products WHERE ProductID = ?",
+      [id],
+    );
+
+    return res.status(200).json({
+      message: `Product with the ID: ${id} updated successfully with the following details:`,
+      product: updatedProduct[0],
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: "Error updating product",
+      details: err.message,
+    });
+  }
+});
+
 // ● Delete a product.
-// =============================================
+app.delete("/products/:id", async (req, res) => {
+  // obtain the product id from the request params
+  const { id } = req.params;
+
+  try {
+    // construct the query
+    const query = `DELETE FROM Products WHERE ProductID = ?`;
+
+    // execute the query
+    const [result] = await db.query(query, [id]);
+
+    // if no product found, return 404 (not found) error
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: `No product found with the ID: ${id}`,
+      });
+    }
+    // if found? return the product id
+    return res.status(200).json({
+      message: `Product with the ID: ${id} deleted successfully.`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: "Error deleting product",
+      details: err.message,
+    });
+  }
+});
 
 // =============================================
 // TODO: Task (3) Create REST API endpoints to perform CRUD operations for the Suppliers table
