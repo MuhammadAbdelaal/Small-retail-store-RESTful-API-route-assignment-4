@@ -1,10 +1,10 @@
-const { db } = require("../../db/connection");
+const { pool } = require("../../db/connection");
 
 // create a supplier in the database
 async function dbCreateSupplier(SupplierName, ContactNumber) {
   const query = `INSERT INTO Suppliers (SupplierName, ContactNumber)
         VALUES (?, ?)`;
-  const [result] = await db.query(query, [SupplierName, ContactNumber]);
+  const [result] = await pool.query(query, [SupplierName, ContactNumber]);
 
   return result;
 }
@@ -12,7 +12,7 @@ async function dbCreateSupplier(SupplierName, ContactNumber) {
 // get a supplier by contact number
 async function dbGetSupplierByContactNumber(ContactNumber) {
   const query = `SELECT * FROM Suppliers WHERE ContactNumber = ?`;
-  const [result] = await db.query(query, [ContactNumber]);
+  const [result] = await pool.query(query, [ContactNumber]);
 
   return result[0];
 }
@@ -20,14 +20,14 @@ async function dbGetSupplierByContactNumber(ContactNumber) {
 // get a supplier by ID
 async function dbGetSupplierByID(id) {
   const query = `SELECT * FROM Suppliers WHERE SupplierID = ?`;
-  const [result] = await db.query(query, [id]);
+  const [result] = await pool.query(query, [id]);
 
   return result[0];
 }
 
 // retrieve all suppliers from the database
 async function dbGetAllSuppliers() {
-  const [result] = await db.query(` SELECT * FROM Suppliers`);
+  const [result] = await pool.query(` SELECT * FROM Suppliers`);
   return result;
 }
 
@@ -38,7 +38,7 @@ async function dbUpdateSupplier(supplierID, supplierName, contactNumber) {
         ContactNumber = COALESCE(?, ContactNumber)
         WHERE SupplierID = ?`;
 
-  const [result] = await db.query(query, [
+  const [result] = await pool.query(query, [
     supplierName,
     contactNumber,
     supplierID,
@@ -50,7 +50,7 @@ async function dbUpdateSupplier(supplierID, supplierName, contactNumber) {
 // delete a supplier from the database
 async function dbDeleteSupplier(id) {
   const query = `DELETE FROM Suppliers WHERE SupplierID = ?`;
-  const [result] = await db.query(query, [id]);
+  const [result] = await pool.query(query, [id]);
 
   return result.affectedRows;
 }

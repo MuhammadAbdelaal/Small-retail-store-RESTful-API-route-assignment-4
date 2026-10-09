@@ -1,10 +1,10 @@
-const { db } = require("../../db/connection");
+const { pool } = require("../../db/connection");
 
 // create a product
 async function dbCreateProduct(productName, price, stockQuantity, supplierID) {
   const query = `INSERT INTO Products (ProductName, Price, StockQuantity, SupplierID)
         VALUES (?, ?, ?, ?)`;
-  const [result] = await db.query(query, [
+  const [result] = await pool.query(query, [
     productName,
     price,
     stockQuantity,
@@ -16,14 +16,14 @@ async function dbCreateProduct(productName, price, stockQuantity, supplierID) {
 
 // get all products
 async function dbGetAllProducts() {
-  const [result] = await db.query(` SELECT * FROM Products`);
+  const [result] = await pool.query(` SELECT * FROM Products`);
   return result;
 }
 
 // get a product by id
 async function dbGetProductById(id) {
   const query = `SELECT * FROM Products WHERE ProductID = ?`;
-  const [result] = await db.query(query, [id]);
+  const [result] = await pool.query(query, [id]);
 
   return result[0];
 }
@@ -43,7 +43,7 @@ async function dbUpdateProduct(
         SupplierID = COALESCE(?, SupplierID)
         WHERE ProductID = ?`;
 
-  const [result] = await db.query(query, [
+  const [result] = await pool.query(query, [
     productName,
     price,
     stockQuantity,
@@ -58,7 +58,7 @@ async function dbUpdateProduct(
 async function dbDeleteProduct(id) {
   // execute the query
   const query = `DELETE FROM Products WHERE ProductID = ?`;
-  const [result] = await db.query(query, [id]);
+  const [result] = await pool.query(query, [id]);
 
   return result.affectedRows;
 }

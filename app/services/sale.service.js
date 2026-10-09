@@ -13,7 +13,7 @@ async function recordSale(productId, quantitySold, saleDate) {
   // to act as a lock, check if the product exists,
   // and if the stock quantity is greater than or equal to the quantity sold
   // in one single step/query
-  // - using the When condition in db query to check
+  // - using the Where condition in db query to check
   // - if the product exists = (id),
   // - and the stock quantity is greater than or equal to the quantity sold
   //then, evaluate the result of the query,
