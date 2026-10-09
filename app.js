@@ -4,6 +4,7 @@ const app = express();
 const PORT = 3000;
 const productRouter = require("./app/routes/product.routes");
 const supplierRouter = require("./app/routes/supplier.routes");
+// const salesRouter = require("./app/routes/sales.routes");
 
 app.use(express.json()); // middleware to parse json requests
 
@@ -22,12 +23,11 @@ app.use("/products", productRouter);
 // Task (3) supplierRouter
 app.use("/suppliers", supplierRouter);
 
-// =============================================
-// TODO: Task (4) Create REST API endpoints to manage Sales
-// ● Record a sale.
+// Task (4) Create REST API endpoints to manage Sales
+// app.use("/sales", salesRouter);
+
 // ● Retrieve all sales.
 // ● Retrieve sales for a specific product.
-// =============================================
 
 // =============================================
 // TODO: Task (5) Create API endpoints to perform the following database modifications
