@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const reportController = require("../controllers/report.controller");
+const salesController = require("../controllers/sale.controller");
 
 const reportRouter = Router();
 
@@ -26,5 +27,8 @@ reportRouter.get(
   "/products/never-sold",
   reportController.retrieveProductsNeverSold,
 );
+
+// ● Retrieve sales with all detailes using SQL JOIN operations.
+reportRouter.get("/sales", salesController.retrieveAllSales);
 
 module.exports = reportRouter;

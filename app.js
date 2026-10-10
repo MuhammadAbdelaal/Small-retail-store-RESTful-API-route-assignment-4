@@ -42,15 +42,8 @@ app.use("/schema", schemaRouter);
 // Task (10) reporting endpoint to retrieve the product with the highest stock
 // Task (11) reporting endpoint to retrieve suppliers whose names start with 'F'
 // Task (12) reporting endpoint to retrieve all products that have never been sold.
+// Task (13) reporting endpoint retrieve sales with details using SQL JOIN operations.
 app.use("/reports", reportRouter);
-
-// =============================================
-// TODO: Task (13)
-// Create a reporting endpoint to retrieve all sales including:
-// ● Product name
-// ● Quantity sold
-// ● Sale date using SQL JOIN operations.
-// =============================================
 
 // =============================================
 // TODO: Task (14)
