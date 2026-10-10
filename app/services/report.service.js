@@ -13,7 +13,15 @@ async function getProductWithHighestStock() {
   return productWithHighestStock;
 }
 
+// get suppliers whose name starts with 'F'
+async function getSuppliersStartingWithF() {
+  const suppliersStartingWithF =
+    await reportRepository.dbGetSuppliersStartingWithF();
+  return suppliersStartingWithF;
+}
+
 module.exports = {
   getTotalSoldPerProduct,
   getProductWithHighestStock,
+  getSuppliersStartingWithF,
 };

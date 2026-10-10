@@ -15,4 +15,10 @@ reportRouter.get(
   reportController.retrieveProductWithHighestStock,
 );
 
+// ● Retrieve suppliers whose names start with 'F'.
+reportRouter.get(
+  "/suppliers/starting-with-f",
+  reportController.retrieveSuppliersStartingWithF,
+);
+
 module.exports = reportRouter;

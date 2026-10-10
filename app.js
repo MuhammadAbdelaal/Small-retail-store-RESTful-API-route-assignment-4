@@ -11,7 +11,7 @@ const reportRouter = require("./app/routes/report.routes");
 // middleware to parse json requests
 app.use(express.json());
 
-// middleware to catch JSON parsing
+// middleware to catch JSON parsing errors
 app.use((err, req, res, next) => {
   if (err.status === 400) {
     // syntax errors come with status code 400
@@ -40,11 +40,8 @@ app.use("/schema", schemaRouter);
 
 // Task (9) endpoint to retrieve the total quantity sold for each product
 // Task (10) reporting endpoint to retrieve the product with the highest stock
+// Task (11) reporting endpoint to retrieve suppliers whose names start with 'F'
 app.use("/reports", reportRouter);
-
-// TODO: Task (11)
-// Create a reporting endpoint to retrieve suppliers whose names start with 'F'
-// =============================================
 
 // =============================================
 // TODO: Task (12)

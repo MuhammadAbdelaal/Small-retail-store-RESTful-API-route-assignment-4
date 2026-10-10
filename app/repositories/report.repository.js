@@ -24,7 +24,19 @@ async function dbGetProductWithHighestStock() {
   return result;
 }
 
+// supplier whose name starts with 'F'
+async function dbGetSuppliersStartingWithF() {
+  const query = `
+    SELECT SupplierID, SupplierName, ContactNumber
+    FROM Suppliers
+    WHERE SupplierName LIKE 'F%'
+    `;
+  const [result] = await pool.query(query);
+  return result;
+}
+
 module.exports = {
   dbGetTotalSoldPerProduct,
   dbGetProductWithHighestStock,
+  dbGetSuppliersStartingWithF,
 };
