@@ -31,15 +31,9 @@ app.use("/sales", salesRouter);
 // Task (5) Create API endpoints to perform the following database modifications
 app.use("/schema", schemaRouter);
 
-// TODO: Task (6)
-// Create an API endpoint or initialization script to insert the following data
-// a. Add a supplier with the name 'FreshFoods' and contact number '01001234567'.
-// b. Insert the following three products, all provided by 'FreshFoods':
-// i. 'Milk' with a price of 15.00 and stock quantity of 50.
-// ii. 'Bread' with a price of 10.00 and stock quantity of 30.
-// iii. 'Eggs' with a price of 20.00 and stock quantity of 40.
-// c. Add a record for the sale of 2 units of 'Milk' made on '2025-05-20'.
-// =============================================
+// Task (6)
+// initialization scripts add to /migration/data-v1.sql
+// and implemented through phpmyadmin
 
 // =============================================
 // TODO: Task (7) Create an API endpoint to update the price of 'Bread' to 25.00.
