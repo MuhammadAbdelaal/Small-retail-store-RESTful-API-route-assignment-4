@@ -6,6 +6,7 @@ const productRouter = require("./app/routes/product.routes");
 const supplierRouter = require("./app/routes/supplier.routes");
 const salesRouter = require("./app/routes/sale.routes");
 const schemaRouter = require("./app/routes/schema.routes");
+const reportRouter = require("./app/routes/report.routes");
 
 // middleware to parse json requests
 app.use(express.json());
@@ -34,14 +35,13 @@ app.use("/sales", salesRouter);
 app.use("/schema", schemaRouter);
 
 // Task (6)
-// initialization scripts add to /migration/data-v1.sql
-// and implemented through phpmyadmin
+// initialization scripts added to ./migration/data-v1.sql
+// and implemented/tested through phpmyadmin
 
-// =============================================
-// TODO: Task (9)
+// Task (9)
 // Create a reporting endpoint to retrieve the total quantity sold for each product
 // using SQL aggregate functions.
-// =============================================
+app.use("/reports", reportRouter);
 
 // =============================================
 // TODO: Task (10)
