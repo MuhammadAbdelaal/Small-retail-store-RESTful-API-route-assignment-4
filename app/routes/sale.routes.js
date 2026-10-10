@@ -10,6 +10,6 @@ saleRouter.post("/", saleController.recordSale);
 saleRouter.get("/", saleController.retrieveAllSales);
 
 // ● Retrieve sales for a specific product.
-saleRouter.get("/:id", saleController.retrieveSalesByProductId);
+saleRouter.get("/product/:productId", saleController.retrieveSalesByProductId);
 
 module.exports = saleRouter;

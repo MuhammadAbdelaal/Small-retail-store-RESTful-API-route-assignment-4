@@ -59,7 +59,7 @@ async function getAllProducts(req, res, next) {
       products: products,
     });
   } catch (err) {
-    return res.status(404).json({
+    return res.status(500).json({
       message: "Error retrieving products for the following reason: ",
       error: err.message,
     });

@@ -47,9 +47,6 @@ async function recordSale(productId, quantity) {
 async function getAllSales() {
   // get all sales from the database
   const sales = await saleRepository.dbGetAllSales();
-  if (!sales) {
-    throw new Error("No sales found");
-  }
   return sales;
 }
 

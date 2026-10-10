@@ -6,13 +6,13 @@ async function recordSale(req, res, next) {
 
   // first: validate the data
   // is quantity is a valid integer? and greater than 0
-  if (!Number(Quantity) || Quantity <= 0) {
+  if (!Number.isInteger(Quantity) || Quantity <= 0) {
     return res.status(400).json({
       error: "Quantity must be a valid number greater than 0.",
     });
   }
   // is the ProductID a valid integer? and greater than 0
-  if (!Number(ProductID) || ProductID <= 0) {
+  if (!Number.isInteger(ProductID) || ProductID <= 0) {
     return res
       .status(400)
       .json({ message: "ProductID must be a valid number greater than 0." });
@@ -45,7 +45,7 @@ async function retrieveAllSales(req, res, next) {
       sales: sales,
     });
   } catch (err) {
-    return res.status(404).json({
+    return res.status(500).json({
       message: "Error retrieving sales: ",
       error: err.message,
     });
@@ -55,12 +55,19 @@ async function retrieveAllSales(req, res, next) {
 // ● Retrieve sales for a specific product.
 async function retrieveSalesByProductId(req, res, next) {
   // obtain the product id from the request params
-  const { id } = req.params;
+  const productId = Number(req.params.productId);
+
+  // validate productId is valid number
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return res.status(400).json({
+      message: "Product ID is required and must be number greater than 0.",
+    });
+  }
   try {
     // call the service to get all sales for the product
-    const sales = await saleService.getSalesByProductId(id);
+    const sales = await saleService.getSalesByProductId(productId);
     return res.status(200).json({
-      message: `Product with ID: ${id} has the following sales:`,
+      message: `Product with ID: ${productId} has the following sales:`,
       sales: sales,
     });
   } catch (err) {
