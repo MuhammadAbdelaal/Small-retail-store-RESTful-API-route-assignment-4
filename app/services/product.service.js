@@ -35,7 +35,16 @@ async function updateProduct(
   stockQuantity,
   supplierID,
   id,
+  name,
 ) {
+  // if updating product by name, find its id first
+  if (name) {
+    const found = await productRepository.dbGetProductByName(name);
+    if (!found) {
+      throw new Error(`No product found with the name: ${name}`);
+    }
+    id = found.ProductID;
+  }
   // if any of the values not provided === undefined
   // convert undefined fields to null to skip updating them using COALESCE() db function
   const ProductName = productName === undefined ? null : productName;
@@ -58,7 +67,7 @@ async function updateProduct(
   }
 
   // if the product was updated, return the updated product details
-  const product = productRepository.dbGetProductById(id);
+  const product = await productRepository.dbGetProductById(id);
 
   return product;
 }

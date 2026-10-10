@@ -20,6 +20,7 @@ app.use((err, req, res, next) => {
 });
 
 // Task (2) productRouter
+// Task (7) Create an API endpoint to update the price of 'Bread' to 25.00.
 app.use("/products", productRouter);
 
 // Task (3) supplierRouter
@@ -34,10 +35,6 @@ app.use("/schema", schemaRouter);
 // Task (6)
 // initialization scripts add to /migration/data-v1.sql
 // and implemented through phpmyadmin
-
-// =============================================
-// TODO: Task (7) Create an API endpoint to update the price of 'Bread' to 25.00.
-// =============================================
 
 // =============================================
 // TODO: Task (8) Create an API endpoint to delete the product 'Eggs'.

@@ -91,7 +91,7 @@ async function getProductById(req, res, next) {
 // update a product
 async function updateProduct(req, res, next) {
   // obtain the product id from the request params
-  const { id } = req.params;
+  const { id, name } = req.params;
 
   // get product data provided
   const { ProductName, Price, StockQuantity, SupplierID } = req.body || {};
@@ -111,14 +111,17 @@ async function updateProduct(req, res, next) {
   }
 
   // validate the price is number and greater than 0
-  if (Price !== undefined && Number(Price) <= 0) {
+  if (Price !== undefined && (typeof Price !== "number" || Price <= 0)) {
     return res.status(400).json({
       error: "Price must be a number greater than 0.",
     });
   }
 
   // validate the stock is a number and greater than or equal to 0
-  if (StockQuantity !== undefined && Number(StockQuantity) < 0) {
+  if (
+    StockQuantity !== undefined &&
+    (!Number.isInteger(StockQuantity) || StockQuantity < 0)
+  ) {
     return res.status(400).json({
       error: "Stock quantity must be a number greater than or equal to 0.",
     });
@@ -133,10 +136,11 @@ async function updateProduct(req, res, next) {
       StockQuantity,
       SupplierID,
       id,
+      name,
     );
 
     return res.status(200).json({
-      message: `Product with the ID: ${id} updated successfully with the following details:`,
+      message: `Product with the ${id || name} updated successfully with the following details:`,
       product: product,
     });
   } catch (err) {

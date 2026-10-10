@@ -72,6 +72,13 @@ async function dbDecreaseStock(conn, quantity, productId) {
   return result.affectedRows;
 }
 
+// get product by name
+async function dbGetProductByName(productName) {
+  const query = `SELECT * FROM Products WHERE ProductName = ?`;
+  const [result] = await pool.query(query, [productName]);
+  return result[0];
+}
+
 module.exports = {
   dbGetAllProducts,
   dbCreateProduct,
@@ -79,4 +86,5 @@ module.exports = {
   dbUpdateProduct,
   dbDeleteProduct,
   dbDecreaseStock,
+  dbGetProductByName,
 };
