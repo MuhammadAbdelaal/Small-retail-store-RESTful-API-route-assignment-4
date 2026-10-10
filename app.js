@@ -45,24 +45,9 @@ app.use("/schema", schemaRouter);
 // Task (13) reporting endpoint retrieve sales with details using SQL JOIN operations.
 app.use("/reports", reportRouter);
 
-// =============================================
-// TODO: Task (14)
-// Create a SQL script or secure administrative endpoint to create
-// a MySQL user named store_manager and grant the following permissions on all tables:
-// ● SELECT
-// ● INSERT
-// ● UPDATE
-// =============================================
-
-// =============================================
-// TODO: Task (15)
-// Revoke the UPDATE permission from “store_manager”.
-// =============================================
-
-// =============================================
-// TODO: Task (16)
-// Grant DELETE permission to “store_manager” only on the Sales table..
-// =============================================
+// Task (14), Task (15), Task (16)
+// All scripts tested through phpmyadmin,
+// implementation scripts added to ./migration/users-v1.sql
 
 //  Initiating the DB and starting the server
 async function startServer() {
