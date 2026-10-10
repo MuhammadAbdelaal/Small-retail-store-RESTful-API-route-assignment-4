@@ -10,6 +10,7 @@ const pool = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "",
+  dateStrings: true,
 });
 
 // create the database and tables (only if they do not exist)

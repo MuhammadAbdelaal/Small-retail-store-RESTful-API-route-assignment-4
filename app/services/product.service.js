@@ -15,6 +15,9 @@ async function createProduct(ProductName, Price, StockQuantity, SupplierID) {
 // get all products
 async function getAllProducts() {
   const products = await productRepository.dbGetAllProducts();
+  if (!products) {
+    throw new Error("No products found");
+  }
   return products;
 }
 

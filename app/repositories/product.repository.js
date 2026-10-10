@@ -63,10 +63,20 @@ async function dbDeleteProduct(id) {
   return result.affectedRows;
 }
 
+// decrease product stock
+async function dbDecreaseStock(conn, quantity, productId) {
+  const query = `UPDATE Products SET
+        StockQuantity = StockQuantity - ?
+        WHERE ProductID = ? AND StockQuantity >= ?`;
+  const [result] = await conn.query(query, [quantity, productId, quantity]);
+  return result.affectedRows;
+}
+
 module.exports = {
   dbGetAllProducts,
   dbCreateProduct,
   dbGetProductById,
   dbUpdateProduct,
   dbDeleteProduct,
+  dbDecreaseStock,
 };
