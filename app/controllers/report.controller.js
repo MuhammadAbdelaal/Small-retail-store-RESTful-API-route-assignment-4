@@ -57,8 +57,28 @@ async function retrieveSuppliersStartingWithF(req, res, next) {
   }
 }
 
+// ● Retrieve products that have never been sold.
+async function retrieveProductsNeverSold(req, res, next) {
+  try {
+    // calling the service
+    const report = await reportService.getProductsNeverSold();
+    return res.status(200).json({
+      success: true,
+      message: "Products that have never been sold: ",
+      report: report,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving products that have never been sold.",
+      success: false,
+      details: err.message,
+    });
+  }
+}
+
 module.exports = {
   retrieveTotalSoldPerProduct,
   retrieveProductWithHighestStock,
   retrieveSuppliersStartingWithF,
+  retrieveProductsNeverSold,
 };

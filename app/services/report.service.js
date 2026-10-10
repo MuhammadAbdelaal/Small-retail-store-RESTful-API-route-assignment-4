@@ -20,8 +20,15 @@ async function getSuppliersStartingWithF() {
   return suppliersStartingWithF;
 }
 
+// get products that have never been sold
+async function getProductsNeverSold() {
+  const productsNeverSold = await reportRepository.dbGetProductsNeverSold();
+  return productsNeverSold;
+}
+
 module.exports = {
   getTotalSoldPerProduct,
   getProductWithHighestStock,
   getSuppliersStartingWithF,
+  getProductsNeverSold,
 };

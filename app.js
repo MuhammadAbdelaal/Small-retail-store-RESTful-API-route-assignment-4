@@ -41,12 +41,8 @@ app.use("/schema", schemaRouter);
 // Task (9) endpoint to retrieve the total quantity sold for each product
 // Task (10) reporting endpoint to retrieve the product with the highest stock
 // Task (11) reporting endpoint to retrieve suppliers whose names start with 'F'
+// Task (12) reporting endpoint to retrieve all products that have never been sold.
 app.use("/reports", reportRouter);
-
-// =============================================
-// TODO: Task (12)
-// Create a reporting endpoint to retrieve all products that have never been sold.
-// =============================================
 
 // =============================================
 // TODO: Task (13)

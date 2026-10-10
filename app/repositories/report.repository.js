@@ -35,8 +35,21 @@ async function dbGetSuppliersStartingWithF() {
   return result;
 }
 
+// products that have never been sold
+async function dbGetProductsNeverSold() {
+  const query = `
+    SELECT Products.ProductID, Products.ProductName
+    FROM Products
+    LEFT JOIN Sales ON Products.ProductID = Sales.ProductID
+    WHERE Sales.SaleID IS NULL;
+`;
+  const [result] = await pool.query(query);
+  return result;
+}
+
 module.exports = {
   dbGetTotalSoldPerProduct,
   dbGetProductWithHighestStock,
   dbGetSuppliersStartingWithF,
+  dbGetProductsNeverSold,
 };

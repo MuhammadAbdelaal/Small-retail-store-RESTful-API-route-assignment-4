@@ -21,4 +21,10 @@ reportRouter.get(
   reportController.retrieveSuppliersStartingWithF,
 );
 
+// ● Retrieve products that have never been sold.
+reportRouter.get(
+  "/products/never-sold",
+  reportController.retrieveProductsNeverSold,
+);
+
 module.exports = reportRouter;
