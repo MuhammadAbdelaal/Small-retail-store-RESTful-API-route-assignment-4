@@ -5,7 +5,10 @@ const PORT = 3000;
 const productRouter = require("./app/routes/product.routes");
 const supplierRouter = require("./app/routes/supplier.routes");
 const salesRouter = require("./app/routes/sale.routes");
-app.use(express.json()); // middleware to parse json requests
+const schemaRouter = require("./app/routes/schema.routes");
+
+// middleware to parse json requests
+app.use(express.json());
 
 // middleware to catch JSON parsing
 app.use((err, req, res, next) => {
@@ -25,15 +28,9 @@ app.use("/suppliers", supplierRouter);
 // Task (4) Create REST API endpoints to manage Sales
 app.use("/sales", salesRouter);
 
-// =============================================
-// TODO: Task (5) Create API endpoints to perform the following database modifications
-// ● Add a Category column to the Products table.
-// ● Remove the Category column.
-// ● Change ContactNumber to VARCHAR(15).
-// ● Add a NOT NULL constraint to ProductName.
-// =============================================
+// Task (5) Create API endpoints to perform the following database modifications
+app.use("/schema", schemaRouter);
 
-// =============================================
 // TODO: Task (6)
 // Create an API endpoint or initialization script to insert the following data
 // a. Add a supplier with the name 'FreshFoods' and contact number '01001234567'.
