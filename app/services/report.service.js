@@ -6,6 +6,14 @@ async function getTotalSoldPerProduct() {
   return totalSoldPerProduct;
 }
 
+// get product with the highest stock quantity
+async function getProductWithHighestStock() {
+  const productWithHighestStock =
+    await reportRepository.dbGetProductWithHighestStock();
+  return productWithHighestStock;
+}
+
 module.exports = {
   getTotalSoldPerProduct,
+  getProductWithHighestStock,
 };

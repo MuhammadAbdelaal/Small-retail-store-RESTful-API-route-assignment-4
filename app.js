@@ -38,17 +38,10 @@ app.use("/schema", schemaRouter);
 // initialization scripts added to ./migration/data-v1.sql
 // and implemented/tested through phpmyadmin
 
-// Task (9)
-// Create a reporting endpoint to retrieve the total quantity sold for each product
-// using SQL aggregate functions.
+// Task (9) endpoint to retrieve the total quantity sold for each product
+// Task (10) reporting endpoint to retrieve the product with the highest stock
 app.use("/reports", reportRouter);
 
-// =============================================
-// TODO: Task (10)
-// Create a reporting endpoint to retrieve the product with the highest stock quantity.
-// =============================================
-
-// =============================================
 // TODO: Task (11)
 // Create a reporting endpoint to retrieve suppliers whose names start with 'F'
 // =============================================

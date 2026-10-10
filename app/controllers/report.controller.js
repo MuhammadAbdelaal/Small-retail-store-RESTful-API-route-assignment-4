@@ -19,6 +19,26 @@ async function retrieveTotalSoldPerProduct(req, res, next) {
   }
 }
 
+// ● Retrieve product with the highest stock quantity.
+async function retrieveProductWithHighestStock(req, res, next) {
+  try {
+    // calling the service
+    const report = await reportService.getProductWithHighestStock();
+    return res.status(200).json({
+      success: true,
+      message: "Product with the highest stock quantity: ",
+      report: report,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving product with the highest stock quantity: ",
+      success: false,
+      details: err.message,
+    });
+  }
+}
+
 module.exports = {
   retrieveTotalSoldPerProduct,
+  retrieveProductWithHighestStock,
 };

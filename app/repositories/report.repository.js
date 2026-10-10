@@ -13,6 +13,18 @@ GROUP BY Products.ProductID, Products.ProductName, Suppliers.SupplierID;`;
   return result;
 }
 
+// product with the highest stock quantity
+async function dbGetProductWithHighestStock() {
+  const query = `
+    SELECT ProductID, ProductName, StockQuantity
+    FROM Products
+    WHERE StockQuantity = (SELECT MAX(StockQuantity) FROM Products)
+    `;
+  const [result] = await pool.query(query);
+  return result;
+}
+
 module.exports = {
   dbGetTotalSoldPerProduct,
+  dbGetProductWithHighestStock,
 };
