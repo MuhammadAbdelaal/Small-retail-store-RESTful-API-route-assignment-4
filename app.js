@@ -19,11 +19,12 @@ app.use((err, req, res, next) => {
   next(err); // if it's not a syntax error, pass it to the next middleware if any
 });
 
-// Task (2) productRouter
+// Task (2) Create REST API endpoints to perform CRUD operations for the Products table.
 // Task (7) Create an API endpoint to update the price of 'Bread' to 25.00.
+// Task (8) Create an API endpoint to delete the product 'Eggs'.
 app.use("/products", productRouter);
 
-// Task (3) supplierRouter
+// Task (3) Create REST API endpoints to perform CRUD operations for the Suppliers table.
 app.use("/suppliers", supplierRouter);
 
 // Task (4) Create REST API endpoints to manage Sales
@@ -35,10 +36,6 @@ app.use("/schema", schemaRouter);
 // Task (6)
 // initialization scripts add to /migration/data-v1.sql
 // and implemented through phpmyadmin
-
-// =============================================
-// TODO: Task (8) Create an API endpoint to delete the product 'Eggs'.
-// =============================================
 
 // =============================================
 // TODO: Task (9)

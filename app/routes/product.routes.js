@@ -20,5 +20,6 @@ productRouter.patch("/name/:name", productController.updateProduct);
 
 // ● Delete a product.
 productRouter.delete("/:id", productController.deleteProduct);
+productRouter.delete("/name/:name", productController.deleteProduct);
 
 module.exports = productRouter;

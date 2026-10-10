@@ -90,7 +90,7 @@ async function getProductById(req, res, next) {
 
 // update a product
 async function updateProduct(req, res, next) {
-  // obtain the product id from the request params
+  // obtain the product data from the request params
   const { id, name } = req.params;
 
   // get product data provided
@@ -140,7 +140,7 @@ async function updateProduct(req, res, next) {
     );
 
     return res.status(200).json({
-      message: `Product with the ${id || name} updated successfully with the following details:`,
+      message: `Product: ${id || name} updated successfully with the following details:`,
       product: product,
     });
   } catch (err) {
@@ -153,14 +153,14 @@ async function updateProduct(req, res, next) {
 
 // delete a product
 async function deleteProduct(req, res, next) {
-  // obtain the product id from the request params
-  const { id } = req.params;
+  // obtain the product data from the request params
+  const { id, name } = req.params;
 
   try {
     // call the service to delete the product
-    await productService.deleteProduct(id);
+    await productService.deleteProduct(id, name);
     return res.status(200).json({
-      message: `Product with the ID: ${id} deleted successfully.`,
+      message: `Product ${id || name} deleted successfully.`,
     });
   } catch (err) {
     return res.status(404).json({

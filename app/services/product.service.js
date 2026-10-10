@@ -73,7 +73,15 @@ async function updateProduct(
 }
 
 // delete a product
-async function deleteProduct(id) {
+async function deleteProduct(id, name) {
+  // if deleting product by name, find its id first
+  if (name) {
+    const found = await productRepository.dbGetProductByName(name);
+    if (!found) {
+      throw new Error(`No product found with the name: ${name}`);
+    }
+    id = found.ProductID;
+  }
   // delete the product from the database
   const isDeleted = await productRepository.dbDeleteProduct(id);
 
